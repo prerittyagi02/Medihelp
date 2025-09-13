@@ -2,9 +2,8 @@ export const runtime = "edge";
 
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { StreamData, streamText } from "ai";
-import { queryPineconeDatabase } from "@/lib/pinecone";
 
-const google_api_key = process.env.GOOGLE_API_KEY as string;
+const google_api_key = "AIzaSyCigfKlZnwkG5Jo3ZjqBmlV1ObU2_52i50";
 
 export const maxDuration = 60;
 
@@ -38,14 +37,7 @@ export default async function handler(req: Request) {
 
   const userQuestion = `${messages[messages.length - 1].content}`;
 
-  const query = `Represent this for searching relevant mental health insights: speech/text analysis says: \n${data.reportData}. \n\n${userQuestion}`;
-
-  const retrievals = await queryPineconeDatabase(
-    "medicalrag",
-    "example2",
-    query
-  );
-
+ 
   const finalPrompt = `You are a supportive, empathetic mental health assistant. I have a speech or text sample analysis and a user query related to mental health. Some relevant mental health insights are also provided that may be applicable to this case.
 
 **Speech/Text Analysis:**
@@ -55,11 +47,6 @@ ${data.reportData}
 **User Query:**
 ${userQuestion}
 **End of user query**
-
-**Relevant Mental Health Context:**
-${retrievals}
-**End of mental health context**
-
 Please analyze the speech/text data considering:
 1. Indicators of depression, anxiety, or other mental health concerns
 2. The severity level of any symptoms detected (mild, moderate, severe)
@@ -80,9 +67,6 @@ Important: Always emphasize that this analysis is not a clinical diagnosis and e
 **Response:**
 `;
   const rawdata = new StreamData();
-  rawdata.append({
-    retrievals: retrievals,
-  });
 
   const result = await streamText({
     model: model,

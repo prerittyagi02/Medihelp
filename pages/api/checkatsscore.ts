@@ -1,28 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+const google_api_key = "AIzaSyCigfKlZnwkG5Jo3ZjqBmlV1ObU2_52i50" as string;
+const genAI = new GoogleGenerativeAI(google_api_key);
 
-const google_api_key = process.env.GOOGLE_API_KEY as string;
-const genAI = new GoogleGenerativeAI(google_api_key); 
-
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
 const prompt = `
 Attached is a resume document.
 
-Go through the resume carefully and analyze its content for the purpose of ATS (Applicant Tracking System) compatibility. 
-Evaluate the resume based on key factors such as:
-
-- Keyword relevance to common industry-specific skills
-- Proper use of action verbs
-- Relevant experience and qualifications alignment with job descriptions
-- Formatting and structure (clarity, ease of reading, and ATS-friendly formatting)
-- Use of relevant certifications, education, and achievements
-
-Provide the ATS score of the resume in numerical form, with a score from 0 to 100. A higher score indicates better compatibility with ATS systems based on the analysis criteria mentioned above.
-
-If the resume is detailed or spans multiple pages, you may extend the analysis appropriately.
-Avoid personal details such as name, contact information, and address. Focus on providing an objective assessment based on the resume content.
-## ATS Score: `;
+Go through the resume carefully and identify the candidate's key skills, qualifications, and experiences that align with potential roles or industries. 
+Highlight strengths, unique achievements, certifications, and any leadership roles or projects that stand out.Write extremely detailed review of the resume with no word limit.
+If the resume is detailed or spans multiple pages, you may extend the word limit appropriately.
+Avoid personal details such as name, contact information, and address. Focus on presenting a clear and professional profile summary based on the content of the resume.
+## Summary: `;
 
 export default async function handler(
   req: NextApiRequest,
@@ -40,6 +30,7 @@ export default async function handler(
   const textResponse =
     result?.response?.candidates?.[0]?.content?.parts?.[0]?.text;
   console.log(textResponse);
+
   return res.status(200).json(textResponse);
 }
 

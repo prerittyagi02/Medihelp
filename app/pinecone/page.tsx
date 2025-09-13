@@ -27,7 +27,9 @@ const VectorDBPage = () => {
   useEffect(() => {
     const fetchFileList = async () => {
       try {
-        const response = await fetch("/api/listfiles");
+        const response = await fetch("/api/listfiles",{
+          method:"POST"
+        });
         const data = await response.json();
         setFileList(data.files);
       } catch (error) {

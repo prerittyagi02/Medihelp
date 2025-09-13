@@ -13,6 +13,7 @@
     "@ai-sdk/openai": "^1.0.15",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@google/genai": "^1.19.0",
     "@google/generative-ai": "^0.21.0",
     "@huggingface/inference": "^2.8.1",
     "@huggingface/transformers": "^3.2.4",

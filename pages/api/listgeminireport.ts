@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-const google_api_key = process.env.GOOGLE_API_KEY as string;
-const genAI = new GoogleGenerativeAI(google_api_key);
-
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const prompt = `
 Analyze the provided speech transcript or text data for potential indicators of depression and anxiety.
@@ -38,6 +34,13 @@ export default async function handler(
     res.status(405).json({ message: "Method not allowed" });
     return;
   }
+
+  const google_api_key = "AIzaSyCigfKlZnwkG5Jo3ZjqBmlV1ObU2_52i50" as string;
+const genAI = new GoogleGenerativeAI(google_api_key);
+
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+
+  console.log(google_api_key)
 
   const { base64 } = req.body;
   const filePart = fileToGenerativePart(base64);
